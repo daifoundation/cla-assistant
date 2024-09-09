@@ -23,11 +23,11 @@ podAnnotations:
   reloader.stakater.com/auto: "true"
 resources:
   limits:
-    cpu: 2
-    memory: 4096Mi
+    cpu: 0.3
+    memory: 512Mi
   requests:
-    cpu: 250m
-    memory: 256Mi
+    cpu: 0.05
+    memory: 128Mi
 autoscaling:
   enabled: true
   minReplicas: 1

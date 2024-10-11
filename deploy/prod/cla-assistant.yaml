@@ -14,9 +14,11 @@ image:
   tag: prod
 serviceAccount:
   create: false
+ingressClassName: traefik
 ingress:
   enabled: true
-  host: cla.daifoundation.org
+  hosts:
+    - cla.daifoundation.org
   annotations:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
 podAnnotations:

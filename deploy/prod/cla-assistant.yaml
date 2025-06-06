@@ -1,7 +1,7 @@
 replicaCount: 1
 service:
   enabled: true
-  name: cla-assistent
+  name: cla-assistant
   port: 8080
   type: ClusterIP
   containerPort: 8080
@@ -9,14 +9,16 @@ service:
     enabled: true
     issuerName: cloudflare
 image:
-  repository: ${ECR_REGISTRY}/cla-assistent
+  repository: ${ECR_REGISTRY}/cla-assistant
   pullPolicy: Always
   tag: prod
 serviceAccount:
   create: false
+ingressClassName: traefik
 ingress:
   enabled: true
-  host: cla.daifoundation.org
+  hosts:
+    - cla.daifoundation.org
   annotations:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
 podAnnotations:
@@ -46,23 +48,42 @@ env:
   GITHUB_CLIENT:
     type: parameterStore
     name: github-client
-    parameter_name: /eks/maker-prod/cla-assistent/github-client
+    parameter_name: /eks/maker-prod/cla-assistant/github-client
   GITHUB_SECRET:
     type: parameterStore
     name: github-secret
-    parameter_name: /eks/maker-prod/cla-assistent/github-secret
+    parameter_name: /eks/maker-prod/cla-assistant/github-secret
   GITHUB_TOKEN:
     type: parameterStore
     name: github-token
-    parameter_name: /eks/maker-prod/cla-assistent/github-token
+    parameter_name: /eks/maker-prod/cla-assistant/github-token
+  GITHUB_APP_NAME:
+    type: kv
+    value: "CLA Assistant MakerDAO"
+  GITHUB_APP_ID:
+    type: parameterStore
+    name: github-app-id
+    parameter_name: /eks/maker-prod/cla-assistant/github-app-id
+  GITHUB_APP_CLIENT:
+    type: parameterStore
+    name: github-app-client
+    parameter_name: /eks/maker-prod/cla-assistant/github-app-client
+  GITHUB_APP_SECRET:
+    type: parameterStore
+    name: github-app-secret
+    parameter_name: /eks/maker-prod/cla-assistant/github-app-secret
+  GITHUB_APP_PRIVATE_KEY:
+    type: parameterStore
+    name: github-app-private-key
+    parameter_name: /eks/maker-prod/cla-assistant/github-app-private-key
   MONGODB:
     type: parameterStore
     name: mongodb
-    parameter_name: /eks/maker-prod/cla-assistent/mongodb
+    parameter_name: /eks/maker-prod/cla-assistant/mongodb
   GITHUB_ADMIN_USERS:
     type: parameterStore
     name: github-admin-users
-    parameter_name: /eks/maker-prod/cla-assistent/github-admin-users
+    parameter_name: /eks/maker-prod/cla-assistant/github-admin-users
 externalSecrets:
   clusterSecretStoreName: maker-prod
 readinessProbe:
